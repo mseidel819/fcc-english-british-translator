@@ -12,20 +12,36 @@ class Translator {
     const timeRegex = /([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])/g;
 
     const textArray = text.split(" ");
+
     const translatedText = textArray.map((word) => {
+      const lastCharIsDot = word.match(/\.$/);
+
+      //if last character is a dot, remove it
+      if (word.match(/\.$/) && !americanToBritishTitles[word.toLowerCase()]) {
+        word = word.slice(0, -1);
+      }
+
       if (americanOnly[word.toLowerCase()]) {
-        return `<span class="highlight">${americanOnly[word]}</span>`;
+        return `<span class="highlight">${americanOnly[word]}</span>${
+          lastCharIsDot ? "." : ""
+        }`;
       } else if (americanToBritishSpelling[word.toLowerCase()]) {
-        return `<span class="highlight">${americanToBritishSpelling[word]}</span>`;
+        return `<span class="highlight">${
+          americanToBritishSpelling[word]
+        }</span>${lastCharIsDot ? "." : ""}`;
       } else if (americanToBritishTitles[word.toLowerCase()]) {
         return `<span class="highlight">${
           americanToBritishTitles[word.toLowerCase()].charAt(0).toUpperCase() +
           americanToBritishTitles[word.toLowerCase()].slice(1)
         }</span>`;
       } else if (word.match(timeRegex)) {
-        return `<span class="highlight">${word.replace(":", ".")}</span>`;
+        return `<span class="highlight">${word.replace(":", ".")}</span>${
+          lastCharIsDot && !americanToBritishTitles[word.toLowerCase()]
+            ? "."
+            : ""
+        }`;
       } else {
-        return word;
+        return `${word}${lastCharIsDot ? "." : ""}`;
       }
     });
 
@@ -38,24 +54,35 @@ class Translator {
     const timeRegex = /([0-9]|0[0-9]|1[0-9]|2[0-3]).([0-5][0-9])/g;
 
     const translatedText = textArray.map((word) => {
-      if (britishOnly[word]) {
+      const lastCharIsDot = word.match(/\.$/);
+
+      //if last character is a dot, remove it
+      if (word.match(/\.$/)) {
+        word = word.slice(0, -1);
+      }
+
+      if (britishOnly[word.toLowerCase()]) {
         return `<span class="highlight">${
           britishOnly[word.toLowerCase()]
-        }</span>`;
+        }</span>${lastCharIsDot ? "." : ""}`;
       } else if (getKeyByValue(americanToBritishSpelling, word.toLowerCase())) {
         return `<span class="highlight">${getKeyByValue(
           americanToBritishSpelling,
           word.toLowerCase()
-        )}</span>`;
+        )}</span>${lastCharIsDot ? "." : ""}`;
       } else if (getKeyByValue(americanToBritishTitles, word.toLowerCase())) {
-        return `<span class="highlight">${getKeyByValue(
-          americanToBritishTitles,
-          word.toLowerCase()
-        )}</span>`;
+        return `<span class="highlight">${
+          getKeyByValue(americanToBritishTitles, word.toLowerCase())
+            .charAt(0)
+            .toUpperCase() +
+          getKeyByValue(americanToBritishTitles, word.toLowerCase()).slice(1)
+        }</span>${lastCharIsDot ? "." : ""}`;
       } else if (word.match(timeRegex)) {
-        return `<span class="highlight">${word.replace(".", ":")}</span>`;
+        return `<span class="highlight">${word.replace(".", ":")}</span>${
+          lastCharIsDot ? "." : ""
+        }`;
       } else {
-        return word;
+        return `${word}${lastCharIsDot ? "." : ""}`;
       }
     });
 
