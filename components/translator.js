@@ -26,6 +26,26 @@ class Translator {
         word = word.slice(0, -1);
       }
 
+      //   if (
+      //     i <
+      //     textArray.length - 2
+      //     // americanOnly[
+      //     //   word.toLowerCase() +
+      //     //     " " +
+      //     //     textArray[i + 1].toLowerCase() +
+      //     //     " " +
+      //     //     textArray[i + 2].toLowerCase()
+      //     // ]
+      //   ) {
+      //     console.log(
+      //       word.toLowerCase() +
+      //         " " +
+      //         textArray[i + 1].toLowerCase() +
+      //         " " +
+      //         textArray[i + 2].toLowerCase()
+      //     );
+      //   }
+
       if (americanOnly[word.toLowerCase()]) {
         return `<span class="highlight">${americanOnly[word]}</span>${
           lastCharIsDot ? "." : ""
@@ -53,6 +73,61 @@ class Translator {
           americanOnly[word + " " + textArray[i + 1]]
         }</span>${lastCharIsDot ? "." : ""}`;
       } else if (
+        i < textArray.length - 2 &&
+        americanOnly[
+          word.toLowerCase() +
+            " " +
+            textArray[i + 1].toLowerCase() +
+            " " +
+            textArray[i + 2].toLowerCase()
+        ]
+      ) {
+        return `<span class="highlight">${
+          americanOnly[
+            word.toLowerCase() +
+              " " +
+              textArray[i + 1].toLowerCase() +
+              " " +
+              textArray[i + 2].toLowerCase()
+          ]
+        }</span>${lastCharIsDot ? "." : ""}`;
+      } else if (
+        i > 1 &&
+        i < textArray.length - 1 &&
+        americanOnly[
+          textArray[i - 2].toLowerCase() +
+            " " +
+            textArray[i - 1].toLowerCase() +
+            " " +
+            word.toLowerCase()
+        ]
+      ) {
+        return "";
+      } else if (
+        i > 0 &&
+        i < textArray.length - 1 &&
+        americanOnly[
+          textArray[i - 1].toLowerCase() +
+            " " +
+            word.toLowerCase() +
+            " " +
+            textArray[i + 1].toLowerCase()
+        ]
+      ) {
+        return "";
+      } else if (
+        i > 1 &&
+        i < textArray.length &&
+        americanOnly[
+          textArray[i - 2].toLowerCase() +
+            " " +
+            textArray[i - 1].toLowerCase() +
+            " " +
+            word.toLowerCase()
+        ]
+      ) {
+        return "";
+      } else if (
         i > 0 &&
         americanOnly[textArray[i - 1] + " " + word.toLowerCase()]
       ) {
@@ -61,8 +136,7 @@ class Translator {
         return `${word}${lastCharIsDot ? "." : ""}`;
       }
     });
-
-    return translatedText.join(" ");
+    return translatedText.filter((word) => word !== "").join(" ");
   }
 
   translateToAmerican(text) {
@@ -73,14 +147,14 @@ class Translator {
     const translatedText = textArray.map((word, i) => {
       const lastCharIsDot = word.match(/\.$/);
 
-      if (i > 0) {
-        // console.log(textArray[i - 1] + " " + word.toLowerCase());
-        // console.log(americanOnly[textArray[i - 1] + " " + word.toLowerCase()]);
-      }
-
       //if last character is a dot, remove it
       if (word.match(/\.$/)) {
         word = word.slice(0, -1);
+      }
+      let wordAfter = textArray[i + 1];
+
+      if (i < textArray.length - 1 && textArray[i + 1].match(/\.$/)) {
+        wordAfter = textArray[i + 1].slice(0, -1);
       }
 
       if (britishOnly[word.toLowerCase()]) {
@@ -104,13 +178,49 @@ class Translator {
           lastCharIsDot ? "." : ""
         }`;
       } else if (
-        i < textArray.length - 1 &&
-        britishOnly[word.toLowerCase() + " " + textArray[i + 1].toLowerCase()]
+        i < textArray.length - 2 &&
+        britishOnly[
+          word.toLowerCase() +
+            " " +
+            textArray[i + 1].toLowerCase() +
+            " " +
+            textArray[i + 2].toLowerCase()
+        ]
       ) {
         return `<span class="highlight">${
-          britishOnly[word + " " + textArray[i + 1]]
+          britishOnly[
+            word.toLowerCase() +
+              " " +
+              textArray[i + 1].toLowerCase() +
+              " " +
+              textArray[i + 2].toLowerCase()
+          ]
         }</span>${lastCharIsDot ? "." : ""}`;
       } else if (
+        i > 1 &&
+        i < textArray.length - 1 &&
+        britishOnly[
+          textArray[i - 2] + " " + textArray[i - 1] + " " + word.toLowerCase()
+        ]
+      ) {
+        return "";
+      } else if (
+        i > 0 &&
+        i < textArray.length - 1 &&
+        britishOnly[
+          textArray[i - 1] + " " + word.toLowerCase() + " " + textArray[i + 1]
+        ]
+      ) {
+        return "";
+      } else if (
+        i < textArray.length - 1 &&
+        britishOnly[word.toLowerCase() + " " + wordAfter]
+      ) {
+        return `<span class="highlight">${
+          britishOnly[word + " " + wordAfter]
+        }</span>${lastCharIsDot ? "." : ""}`;
+      } else if (
+        //two worded secondword erase
         i > 0 &&
         britishOnly[textArray[i - 1] + " " + word.toLowerCase()]
       ) {
@@ -120,7 +230,7 @@ class Translator {
       }
     });
 
-    return translatedText.join(" ");
+    return translatedText.filter((word) => word !== "").join(" ");
   }
 
   translate(text, locale) {

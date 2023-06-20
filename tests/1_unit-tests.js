@@ -58,9 +58,9 @@ suite("Unit Tests", () => {
   // Translate Like a high tech Rube Goldberg machine. to British English
   test("Like a high tech Rube Goldberg machine. to British English", (done) => {
     const translator = new Translator();
-    const text = "Like a high tech Rube Goldberg machine.";
+    const text = "Like a high tech Rube Goldberg machine";
     const expected =
-      'Like a high tech <span class="highlight">Heath Robinson device</span>.';
+      'Like a high tech <span class="highlight">Heath Robinson device</span>';
     assert.equal(translator.translate(text, a2b), expected);
     done();
   });
@@ -137,7 +137,7 @@ suite("Unit Tests", () => {
     const translator = new Translator();
     const text = "I spent the bank holiday at the funfair.";
     const expected =
-      'I spent the <span class="highlight">public holiday</span>  at the <span class="highlight">carnival</span>.';
+      'I spent the <span class="highlight">public holiday</span> at the <span class="highlight">carnival</span>.';
     assert.equal(translator.translate(text, b2a), expected);
     done();
   });
@@ -157,7 +157,7 @@ suite("Unit Tests", () => {
     const translator = new Translator();
     const text = "I've just got bits and bobs in my bum bag.";
     const expected =
-      'I\'ve just got <span class="highlight">odds and ends</span> in my <span class="highlight">fanny pack</span>.';
+      'I\'ve just got <span class="highlight">odds and ends</span> in my <span class="highlight">fanny pack</span>';
     assert.equal(translator.translate(text, b2a), expected);
     done();
   });
