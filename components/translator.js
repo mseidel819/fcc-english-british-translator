@@ -9,6 +9,15 @@ function getKeyByValue(object, value) {
 
 class Translator {
   translateToBrittish(text) {
+    //check if text is valid time with regex
+    const timeRegex = /([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])/g;
+    // const timeRegexMatch = text.match(timeRegex);
+    // if (timeRegexMatch) {
+    //   timeRegexMatch.forEach((match) => {
+    //     text = text.replace(match, match.replace(":", "."));
+    //   });
+    // }
+
     const textArray = text.split(" ");
     const translatedText = textArray.map((word) => {
       if (americanOnly[word.toLowerCase()]) {
@@ -16,11 +25,12 @@ class Translator {
       } else if (americanToBritishSpelling[word.toLowerCase()]) {
         return `<span class="highlight">${americanToBritishSpelling[word]}</span>`;
       } else if (americanToBritishTitles[word.toLowerCase()]) {
-        console.log(typeof americanToBritishTitles[word.toLowerCase()]);
         return `<span class="highlight">${
           americanToBritishTitles[word.toLowerCase()].charAt(0).toUpperCase() +
           americanToBritishTitles[word.toLowerCase()].slice(1)
         }</span>`;
+      } else if (word.match(timeRegex)) {
+        return `<span class="highlight">${word.replace(":", ".")}</span>`;
       } else {
         return word;
       }
@@ -32,6 +42,14 @@ class Translator {
   translateToAmerican(text) {
     // const formattedText = text.toLowerCase();
     const textArray = text.split(" ");
+
+    const timeRegex = /([0-9]|0[0-9]|1[0-9]|2[0-3]).([0-5][0-9])/g;
+    // const timeRegexMatch = text.match(timeRegex);
+    // if (timeRegexMatch) {
+    //   timeRegexMatch.forEach((match) => {
+    //     text = text.replace(match, match.replace(".", ":"));
+    //   });
+    // }
 
     const translatedText = textArray.map((word) => {
       if (britishOnly[word]) {
@@ -48,6 +66,8 @@ class Translator {
           americanToBritishTitles,
           word.toLowerCase()
         )}</span>`;
+      } else if (word.match(timeRegex)) {
+        return `<span class="highlight">${word.replace(".", ":")}</span>`;
       } else {
         return word;
       }
