@@ -9,14 +9,7 @@ function getKeyByValue(object, value) {
 
 class Translator {
   translateToBrittish(text) {
-    //check if text is valid time with regex
     const timeRegex = /([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])/g;
-    // const timeRegexMatch = text.match(timeRegex);
-    // if (timeRegexMatch) {
-    //   timeRegexMatch.forEach((match) => {
-    //     text = text.replace(match, match.replace(":", "."));
-    //   });
-    // }
 
     const textArray = text.split(" ");
     const translatedText = textArray.map((word) => {
@@ -40,16 +33,9 @@ class Translator {
   }
 
   translateToAmerican(text) {
-    // const formattedText = text.toLowerCase();
     const textArray = text.split(" ");
 
     const timeRegex = /([0-9]|0[0-9]|1[0-9]|2[0-3]).([0-5][0-9])/g;
-    // const timeRegexMatch = text.match(timeRegex);
-    // if (timeRegexMatch) {
-    //   timeRegexMatch.forEach((match) => {
-    //     text = text.replace(match, match.replace(".", ":"));
-    //   });
-    // }
 
     const translatedText = textArray.map((word) => {
       if (britishOnly[word]) {

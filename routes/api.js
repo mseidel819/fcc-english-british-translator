@@ -6,9 +6,6 @@ module.exports = function (app) {
   const translator = new Translator();
 
   app.route("/api/translate").post((req, res) => {
-    //locale will be 'american-to-british' or 'british-to-american'
-    // ex. { text: 'dgeg', locale: 'american-to-british' }
-    console.log(req.body);
     const { text, locale } = req.body;
 
     if (text === "") {
