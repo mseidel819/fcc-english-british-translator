@@ -16,7 +16,11 @@ class Translator {
       } else if (americanToBritishSpelling[word.toLowerCase()]) {
         return `<span class="highlight">${americanToBritishSpelling[word]}</span>`;
       } else if (americanToBritishTitles[word.toLowerCase()]) {
-        return `<span class="highlight">${americanToBritishTitles[word]}</span>`;
+        console.log(typeof americanToBritishTitles[word.toLowerCase()]);
+        return `<span class="highlight">${
+          americanToBritishTitles[word.toLowerCase()].charAt(0).toUpperCase() +
+          americanToBritishTitles[word.toLowerCase()].slice(1)
+        }</span>`;
       } else {
         return word;
       }
