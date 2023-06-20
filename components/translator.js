@@ -13,8 +13,13 @@ class Translator {
 
     const textArray = text.split(" ");
 
-    const translatedText = textArray.map((word) => {
+    const translatedText = textArray.map((word, i) => {
       const lastCharIsDot = word.match(/\.$/);
+
+      if (i > 0) {
+        // console.log(textArray[i - 1] + " " + word.toLowerCase());
+        // console.log(americanOnly[textArray[i - 1] + " " + word.toLowerCase()]);
+      }
 
       //if last character is a dot, remove it
       if (word.match(/\.$/) && !americanToBritishTitles[word.toLowerCase()]) {
@@ -40,6 +45,18 @@ class Translator {
             ? "."
             : ""
         }`;
+      } else if (
+        i < textArray.length - 1 &&
+        americanOnly[word.toLowerCase() + " " + textArray[i + 1].toLowerCase()]
+      ) {
+        return `<span class="highlight">${
+          americanOnly[word + " " + textArray[i + 1]]
+        }</span>${lastCharIsDot ? "." : ""}`;
+      } else if (
+        i > 0 &&
+        americanOnly[textArray[i - 1] + " " + word.toLowerCase()]
+      ) {
+        return "";
       } else {
         return `${word}${lastCharIsDot ? "." : ""}`;
       }
@@ -53,8 +70,13 @@ class Translator {
 
     const timeRegex = /([0-9]|0[0-9]|1[0-9]|2[0-3]).([0-5][0-9])/g;
 
-    const translatedText = textArray.map((word) => {
+    const translatedText = textArray.map((word, i) => {
       const lastCharIsDot = word.match(/\.$/);
+
+      if (i > 0) {
+        // console.log(textArray[i - 1] + " " + word.toLowerCase());
+        // console.log(americanOnly[textArray[i - 1] + " " + word.toLowerCase()]);
+      }
 
       //if last character is a dot, remove it
       if (word.match(/\.$/)) {
@@ -81,6 +103,18 @@ class Translator {
         return `<span class="highlight">${word.replace(".", ":")}</span>${
           lastCharIsDot ? "." : ""
         }`;
+      } else if (
+        i < textArray.length - 1 &&
+        britishOnly[word.toLowerCase() + " " + textArray[i + 1].toLowerCase()]
+      ) {
+        return `<span class="highlight">${
+          britishOnly[word + " " + textArray[i + 1]]
+        }</span>${lastCharIsDot ? "." : ""}`;
+      } else if (
+        i > 0 &&
+        britishOnly[textArray[i - 1] + " " + word.toLowerCase()]
+      ) {
+        return "";
       } else {
         return `${word}${lastCharIsDot ? "." : ""}`;
       }

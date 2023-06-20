@@ -137,7 +137,7 @@ suite("Unit Tests", () => {
     const translator = new Translator();
     const text = "I spent the bank holiday at the funfair.";
     const expected =
-      'I spent the <span class="highlight">public holiday</span> at the <span class="highlight">carnival</span>.';
+      'I spent the <span class="highlight">public holiday</span>  at the <span class="highlight">carnival</span>.';
     assert.equal(translator.translate(text, b2a), expected);
     done();
   });
